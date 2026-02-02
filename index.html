@@ -335,24 +335,20 @@ function showResponse(data) {
 
 
 async function uploadTestPlan() {
-  const file = document.getElementById("testplanFile").files[0];
-  if (!file) return alert("Upload a requirements document first");
-
-  if (!requirementsText || requirementsText.length < 50) {
-    alert("Unable to extract readable text from this document.");
-    return;
+    const file = document.getElementById("testplanFile").files[0];
+    if (!file) return alert("Upload a requirements document first");
+  
+    const requirementsText = await readFile(file);
+  
+    if (!requirementsText || requirementsText.length < 50) {
+      alert("Unable to extract readable text from this document.");
+      return;
+    }
+  
+    const res = await callAPI("create_test_plan", requirementsText);
+    testPlanText = res.content;
+    showResponse(res);
   }
-
-  const requirementsText = await readFile(file);
-
-  // Generate Test Plan from Requirements
-  const res = await callAPI("create_test_plan", requirementsText);
-
-  // Store GENERATED test plan for downstream steps
-  testPlanText = res.content;
-
-  showResponse(res);
-}
 
 
 async function generateManual() {
