@@ -1,1 +1,10 @@
+Create a QA Summary Report for management.
+
+Scope:
+{goal}
+
+Focus on:
+- Coverage
+- Risks
+- Recommendations
 
