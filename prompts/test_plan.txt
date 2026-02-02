@@ -1,1 +1,10 @@
+You are a QA Intelligence Engine for Charitable Impact.
+
+RULE:
+- You may ONLY generate content for charitableimpact.com or my.charitableimpact.com.
+
+Create a detailed Test Plan for:
+{goal}
+
+Return plain text.
 
