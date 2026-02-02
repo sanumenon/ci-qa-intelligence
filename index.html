@@ -129,10 +129,9 @@ Plan → Design → Automate → Analyze
 <div class="grid">
 
   <div class="card">
-    <h2>📄 1. Upload Test Plan</h2>
-    <p>Upload an existing test plan to analyze scope, features, and risks.</p>
-    <input type="file" id="testplanFile">
-    <button onclick="uploadTestPlan()">Analyze Test Plan</button>
+    <h2>📄 1. Upload Requirements</h2>
+    <p>Upload requirements / BRD / PRD to generate a structured test plan.</p>
+    <button onclick="uploadTestPlan()">Generate Test Plan</button>
   </div>
 
   <div class="card">
@@ -206,6 +205,7 @@ async function callAPI(action, content) {
 
 function showResponse(data) {
   const out = document.getElementById("output");
+  out.innerHTML = ""; // clear previous output
   out.textContent = data.content;
 
   const link = document.createElement("a");
@@ -222,10 +222,19 @@ function showResponse(data) {
 
 async function uploadTestPlan() {
   const file = document.getElementById("testplanFile").files[0];
-  if (!file) return alert("Upload a test plan first");
-  testPlanText = await readFile(file);
-  showResponse(await callAPI("plan", testPlanText));
+  if (!file) return alert("Upload a requirements document first");
+
+  const requirementsText = await readFile(file);
+
+  // Generate Test Plan from Requirements
+  const res = await callAPI("create_test_plan", requirementsText);
+
+  // Store GENERATED test plan for downstream steps
+  testPlanText = res.content;
+
+  showResponse(res);
 }
+
 
 async function generateManual() {
   if (!testPlanText) return alert("Upload test plan first");
