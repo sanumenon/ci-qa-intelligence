@@ -312,9 +312,19 @@ async function callAPI(action, content) {
 }
 
 function clearOutput() {
+  // Clear output area
   const out = document.getElementById("output");
   out.innerHTML = "Results cleared.";
+
+  // Clear file inputs
+  document.getElementById("testplanFile").value = "";
+  document.getElementById("resultsFile").value = "";
+
+  // Reset in-memory state
+  testPlanText = "";
+  executionResults = "";
 }
+
 
 function showResponse(data) {
   const out = document.getElementById("output");
