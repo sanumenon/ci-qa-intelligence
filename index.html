@@ -164,13 +164,6 @@ function showResponse(data) {
   out.appendChild(document.createElement("hr"));
   out.appendChild(link);
 }
-
-link.download = data.filename;
-link.innerText = "⬇ Download " + data.filename;
-
-out.appendChild(document.createElement("hr"));
-out.appendChild(link);
-}
 function setLoading(isLoading) {
   document.body.style.opacity = isLoading ? "0.6" : "1";
 }
