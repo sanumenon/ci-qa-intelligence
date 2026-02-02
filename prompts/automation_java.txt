@@ -1,1 +1,10 @@
+Generate Java Selenium TestNG automation code using Page Object Model.
+
+Constraints:
+- Base URL must be Charitable Impact
+- No explanations
+- Clean code
+
+Feature:
+{goal}
 
