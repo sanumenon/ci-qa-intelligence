@@ -1,14 +1,14 @@
-
 <!DOCTYPE html>
 <html>
 <head>
-  <title>CI QA Intelligence</title>
+  <title>Charitable Impact – QA Intelligence</title>
 </head>
 <body>
+
 <h2>Charitable Impact – QA Intelligence</h2>
 
 <input id="url" placeholder="Application URL"><br><br>
-<textarea id="goal" placeholder="What do you want to test?"></textarea><br><br>
+<textarea id="goal" placeholder="What do you want to test?" rows="5"></textarea><br><br>
 
 <select id="action">
   <option value="plan">Generate Test Plan</option>
@@ -18,22 +18,27 @@
   <option value="summary">Generate QA Summary</option>
 </select><br><br>
 
-<button onclick="submit()">Generate</button>
+<button onclick="generate()">Generate</button>
 
 <pre id="output"></pre>
 
 <script>
-async function submit() {
-  const res = await fetch("/api", {
+const API_URL = "https://YOUR-WORKER-NAME.YOUR-SUBDOMAIN.workers.dev";
+
+async function generate() {
+  const res = await fetch(API_URL, {
     method: "POST",
+    headers: { "Content-Type": "application/json" },
     body: JSON.stringify({
       url: document.getElementById("url").value,
       goal: document.getElementById("goal").value,
       action: document.getElementById("action").value
     })
   });
+
   document.getElementById("output").innerText = await res.text();
 }
 </script>
+
 </body>
 </html>
