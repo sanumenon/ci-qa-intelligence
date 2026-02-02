@@ -2,67 +2,185 @@
 <html lang="en">
 <head>
   <title>Charitable Impact – QA Intelligence</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+
   <style>
-    body { font-family: Arial; margin: 40px; }
-    h2 { margin-bottom: 5px; }
-    section { border: 1px solid #ddd; padding: 15px; margin-bottom: 20px; }
-    textarea { width: 100%; }
-    button { margin-top: 10px; }
-    pre { background: #f6f6f6; padding: 10px; white-space: pre-wrap; }
+    :root {
+      --primary: #2563eb;
+      --secondary: #0f172a;
+      --bg: #f8fafc;
+      --card: #ffffff;
+      --border: #e5e7eb;
+      --muted: #64748b;
+    }
+
+    body {
+      font-family: "Segoe UI", system-ui, Arial, sans-serif;
+      background: var(--bg);
+      margin: 0;
+      padding: 30px;
+      color: var(--secondary);
+    }
+
+    h1 {
+      margin-bottom: 5px;
+    }
+
+    .subtitle {
+      color: var(--muted);
+      margin-bottom: 30px;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+      gap: 20px;
+    }
+
+    .card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 18px;
+      box-shadow: 0 1px 2px rgba(0,0,0,0.04);
+    }
+
+    .card h2 {
+      font-size: 16px;
+      margin: 0 0 10px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .card p {
+      font-size: 13px;
+      color: var(--muted);
+      margin-bottom: 12px;
+    }
+
+    input[type="file"],
+    select,
+    textarea {
+      width: 100%;
+      padding: 8px;
+      border-radius: 6px;
+      border: 1px solid var(--border);
+      margin-bottom: 10px;
+      font-size: 13px;
+    }
+
+    button {
+      background: var(--primary);
+      color: white;
+      border: none;
+      border-radius: 6px;
+      padding: 8px 14px;
+      font-size: 13px;
+      cursor: pointer;
+    }
+
+    button.secondary {
+      background: #475569;
+    }
+
+    button:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
+    }
+
+    .output {
+      margin-top: 30px;
+    }
+
+    pre {
+      background: #020617;
+      color: #e5e7eb;
+      padding: 15px;
+      border-radius: 8px;
+      font-size: 12px;
+      overflow-x: auto;
+      white-space: pre-wrap;
+    }
+
+    .download {
+      display: inline-block;
+      margin-top: 10px;
+      font-size: 13px;
+      color: var(--primary);
+      text-decoration: none;
+      font-weight: 500;
+    }
+
+    .loading {
+      opacity: 0.5;
+      pointer-events: none;
+    }
   </style>
 </head>
+
 <body>
 
-<h1>Charitable Impact – QA Intelligence Platform</h1>
-<p>Plan → Design → Automate → Analyze</p>
+<h1>🧠 Charitable Impact – QA Intelligence</h1>
+<div class="subtitle">
+Plan → Design → Automate → Analyze
+</div>
 
-<!-- ========================= -->
-<section>
-<h2>1️⃣ Upload Test Plan</h2>
-<input type="file" id="testplanFile" />
-<button onclick="uploadTestPlan()">Upload & Analyze</button>
-</section>
+<div class="grid">
 
-<!-- ========================= -->
-<section>
-<h2>2️⃣ Generate Manual Test Cases</h2>
-<p>Based on uploaded Test Plan</p>
-<button onclick="generateManual()">Generate Manual Test Cases</button>
-</section>
+  <div class="card">
+    <h2>📄 1. Upload Test Plan</h2>
+    <p>Upload an existing test plan to analyze scope, features, and risks.</p>
+    <input type="file" id="testplanFile">
+    <button onclick="uploadTestPlan()">Analyze Test Plan</button>
+  </div>
 
-<!-- ========================= -->
-<section>
-<h2>3️⃣ Generate Automation Test Assets</h2>
-<select id="automationType">
-  <option value="api">API – Postman</option>
-  <option value="ui">UI – Java Selenium POM</option>
-  <option value="perf">Performance – JMeter</option>
-</select>
-<button onclick="generateAutomation()">Generate</button>
-</section>
+  <div class="card">
+    <h2>📝 2. Manual Test Cases</h2>
+    <p>Generate scenario-based manual test cases (TestLink format).</p>
+    <button onclick="generateManual()">Generate Manual Tests</button>
+  </div>
 
-<!-- ========================= -->
-<section>
-<h2>4️⃣ Upload Execution Results</h2>
-<input type="file" id="resultsFile" />
-<button onclick="uploadResults()">Upload Results</button>
-</section>
+  <div class="card">
+    <h2>🤖 3. Automation Assets</h2>
+    <p>Create automation-ready assets from the test plan.</p>
+    <select id="automationType">
+      <option value="api">🔗 API – Postman</option>
+      <option value="ui">🖥️ UI – Java Selenium (POM)</option>
+      <option value="perf">⚡ Performance – JMeter</option>
+    </select>
+    <button onclick="generateAutomation()">Generate Automation</button>
+  </div>
 
-<!-- ========================= -->
-<section>
-<h2>5️⃣ QA Summary & Next Steps</h2>
-<button onclick="generateSummary()">Generate QA Summary</button>
-</section>
+  <div class="card">
+    <h2>📊 4. Upload Execution Results</h2>
+    <p>Upload execution output to analyze failures and gaps.</p>
+    <input type="file" id="resultsFile">
+    <button class="secondary" onclick="uploadResults()">Upload Results</button>
+  </div>
 
-<h2>Output</h2>
-<pre id="output"></pre>
+  <div class="card">
+    <h2>✅ 5. QA Summary & Next Steps</h2>
+    <p>Get clear guidance on what to fix, automate, or prioritize next.</p>
+    <button onclick="generateSummary()">Generate QA Summary</button>
+  </div>
+
+</div>
+
+<div class="output">
+  <h2>📤 Output</h2>
+  <pre id="output">Results will appear here…</pre>
+</div>
 
 <script>
 const API_URL = "https://YOUR-WORKER-NAME.workers.dev";
 let testPlanText = "";
 let executionResults = "";
 
-// -------------------------------
+function setLoading(isLoading) {
+  document.body.classList.toggle("loading", isLoading);
+}
+
 function readFile(file) {
   return new Promise(res => {
     const reader = new FileReader();
@@ -71,58 +189,8 @@ function readFile(file) {
   });
 }
 
-// -------------------------------
-async function uploadTestPlan() {
-  const file = document.getElementById("testplanFile").files[0];
-  if (!file) return alert("Upload test plan first");
-
-  testPlanText = await readFile(file);
-
-  const res = await callAPI("plan", testPlanText);
-  showResponse(res);
-
-}
-
-// -------------------------------
-async function generateManual() {
-  if (!testPlanText) return alert("Upload test plan first");
-  setLoading(true);
-  const res = await callAPI("manual", testPlanText);
-  setLoading(false);
-  showResponse(res);
-}
-
-// -------------------------------
-async function generateAutomation() {
-  const type = document.getElementById("automationType").value;
-  const actionMap = {
-    api: "postman",
-    ui: "java",
-    perf: "jmeter"
-  };
-  const res = await callAPI(actionMap[type], testPlanText);
-  showResponse(res);
-
-}
-
-// -------------------------------
-async function uploadResults() {
-  const file = document.getElementById("resultsFile").files[0];
-  if (!file) return alert("Upload execution results");
-  executionResults = await readFile(file);
-  show("Results uploaded successfully.");
-}
-
-// -------------------------------
-async function generateSummary() {
-  if (!executionResults) return alert("Upload execution results first");
-  const res = await callAPI("summary", executionResults);
-  showResponse(res);
-
-}
-
-// -------------------------------
 async function callAPI(action, content) {
+  setLoading(true);
   const res = await fetch(API_URL, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
@@ -132,42 +200,56 @@ async function callAPI(action, content) {
       goal: content
     })
   });
+  setLoading(false);
   return await res.json();
-}
-
-// -------------------------------
-function show(text) {
-  document.getElementById("output").innerText = text;
 }
 
 function showResponse(data) {
   const out = document.getElementById("output");
   out.textContent = data.content;
 
-  const mimeMap = {
-    xml: "application/xml",
-    json: "application/json",
-    jmx: "application/xml",
-    txt: "text/plain"
-  };
-
-  const ext = data.filename.split(".").pop();
-  const mime = mimeMap[ext] || "text/plain";
-
   const link = document.createElement("a");
-  link.href = URL.createObjectURL(
-    new Blob([data.content], { type: mime })
-  );
+  link.className = "download";
   link.download = data.filename;
-  link.innerText = "⬇ Download " + data.filename;
+  link.href = URL.createObjectURL(
+    new Blob([data.content], { type: "text/plain" })
+  );
+  link.textContent = "⬇ Download " + data.filename;
 
   out.appendChild(document.createElement("hr"));
   out.appendChild(link);
 }
-function setLoading(isLoading) {
-  document.body.style.opacity = isLoading ? "0.6" : "1";
+
+async function uploadTestPlan() {
+  const file = document.getElementById("testplanFile").files[0];
+  if (!file) return alert("Upload a test plan first");
+  testPlanText = await readFile(file);
+  showResponse(await callAPI("plan", testPlanText));
 }
 
+async function generateManual() {
+  if (!testPlanText) return alert("Upload test plan first");
+  showResponse(await callAPI("manual", testPlanText));
+}
+
+async function generateAutomation() {
+  if (!testPlanText) return alert("Upload test plan first");
+  const map = { api: "postman", ui: "java", perf: "jmeter" };
+  const type = document.getElementById("automationType").value;
+  showResponse(await callAPI(map[type], testPlanText));
+}
+
+async function uploadResults() {
+  const file = document.getElementById("resultsFile").files[0];
+  if (!file) return alert("Upload execution results first");
+  executionResults = await readFile(file);
+  alert("Results uploaded successfully");
+}
+
+async function generateSummary() {
+  if (!executionResults) return alert("Upload execution results first");
+  showResponse(await callAPI("summary", executionResults));
+}
 </script>
 
 </body>
