@@ -86,9 +86,10 @@ async function uploadTestPlan() {
 // -------------------------------
 async function generateManual() {
   if (!testPlanText) return alert("Upload test plan first");
+  setLoading(true);
   const res = await callAPI("manual", testPlanText);
- showResponse(res);
-
+  setLoading(false);
+  showResponse(res);
 }
 
 // -------------------------------
@@ -140,18 +141,38 @@ function show(text) {
 }
 
 function showResponse(data) {
-const out = document.getElementById("output");
-out.textContent = data.content;
+  const out = document.getElementById("output");
+  out.textContent = data.content;
 
-const link = document.createElement("a");
-link.href = URL.createObjectURL(
-  new Blob([data.content], { type: "text/plain" })
-);
+  const mimeMap = {
+    xml: "application/xml",
+    json: "application/json",
+    jmx: "application/xml",
+    txt: "text/plain"
+  };
+
+  const ext = data.filename.split(".").pop();
+  const mime = mimeMap[ext] || "text/plain";
+
+  const link = document.createElement("a");
+  link.href = URL.createObjectURL(
+    new Blob([data.content], { type: mime })
+  );
+  link.download = data.filename;
+  link.innerText = "⬇ Download " + data.filename;
+
+  out.appendChild(document.createElement("hr"));
+  out.appendChild(link);
+}
+
 link.download = data.filename;
 link.innerText = "⬇ Download " + data.filename;
 
 out.appendChild(document.createElement("hr"));
 out.appendChild(link);
+}
+function setLoading(isLoading) {
+  document.body.style.opacity = isLoading ? "0.6" : "1";
 }
 
 </script>
