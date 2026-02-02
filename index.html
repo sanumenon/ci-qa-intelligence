@@ -1,42 +1,138 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
   <title>Charitable Impact – QA Intelligence</title>
+  <style>
+    body { font-family: Arial; margin: 40px; }
+    h2 { margin-bottom: 5px; }
+    section { border: 1px solid #ddd; padding: 15px; margin-bottom: 20px; }
+    textarea { width: 100%; }
+    button { margin-top: 10px; }
+    pre { background: #f6f6f6; padding: 10px; white-space: pre-wrap; }
+  </style>
 </head>
 <body>
 
-<h2>Charitable Impact – QA Intelligence</h2>
+<h1>Charitable Impact – QA Intelligence Platform</h1>
+<p>Plan → Design → Automate → Analyze</p>
 
-<input id="url" placeholder="Application URL"><br><br>
-<textarea id="goal" placeholder="What do you want to test?" rows="5"></textarea><br><br>
+<!-- ========================= -->
+<section>
+<h2>1️⃣ Upload Test Plan</h2>
+<input type="file" id="testplanFile" />
+<button onclick="uploadTestPlan()">Upload & Analyze</button>
+</section>
 
-<select id="action">
-  <option value="plan">Generate Test Plan</option>
-  <option value="testlink">Generate TestLink Test Cases</option>
-  <option value="java">Generate Java Automation</option>
-  <option value="python">Generate Python Automation</option>
-  <option value="summary">Generate QA Summary</option>
-</select><br><br>
+<!-- ========================= -->
+<section>
+<h2>2️⃣ Generate Manual Test Cases</h2>
+<p>Based on uploaded Test Plan</p>
+<button onclick="generateManual()">Generate Manual Test Cases</button>
+</section>
 
-<button onclick="generate()">Generate</button>
+<!-- ========================= -->
+<section>
+<h2>3️⃣ Generate Automation Test Assets</h2>
+<select id="automationType">
+  <option value="api">API – Postman</option>
+  <option value="ui">UI – Java Selenium POM</option>
+  <option value="perf">Performance – JMeter</option>
+</select>
+<button onclick="generateAutomation()">Generate</button>
+</section>
 
+<!-- ========================= -->
+<section>
+<h2>4️⃣ Upload Execution Results</h2>
+<input type="file" id="resultsFile" />
+<button onclick="uploadResults()">Upload Results</button>
+</section>
+
+<!-- ========================= -->
+<section>
+<h2>5️⃣ QA Summary & Next Steps</h2>
+<button onclick="generateSummary()">Generate QA Summary</button>
+</section>
+
+<h2>Output</h2>
 <pre id="output"></pre>
 
 <script>
-const API_URL = "https://YOUR-WORKER-NAME.YOUR-SUBDOMAIN.workers.dev";
+const API_URL = "https://YOUR-WORKER-NAME.workers.dev";
+let testPlanText = "";
+let executionResults = "";
 
-async function generate() {
+// -------------------------------
+function readFile(file) {
+  return new Promise(res => {
+    const reader = new FileReader();
+    reader.onload = () => res(reader.result);
+    reader.readAsText(file);
+  });
+}
+
+// -------------------------------
+async function uploadTestPlan() {
+  const file = document.getElementById("testplanFile").files[0];
+  if (!file) return alert("Upload test plan first");
+
+  testPlanText = await readFile(file);
+
+  const res = await callAPI("plan", testPlanText);
+  show(res);
+}
+
+// -------------------------------
+async function generateManual() {
+  if (!testPlanText) return alert("Upload test plan first");
+  const res = await callAPI("manual", testPlanText);
+  show(res);
+}
+
+// -------------------------------
+async function generateAutomation() {
+  const type = document.getElementById("automationType").value;
+  const actionMap = {
+    api: "postman",
+    ui: "java",
+    perf: "jmeter"
+  };
+  const res = await callAPI(actionMap[type], testPlanText);
+  show(res);
+}
+
+// -------------------------------
+async function uploadResults() {
+  const file = document.getElementById("resultsFile").files[0];
+  if (!file) return alert("Upload execution results");
+  executionResults = await readFile(file);
+  show("Results uploaded successfully.");
+}
+
+// -------------------------------
+async function generateSummary() {
+  if (!executionResults) return alert("Upload execution results first");
+  const res = await callAPI("summary", executionResults);
+  show(res);
+}
+
+// -------------------------------
+async function callAPI(action, content) {
   const res = await fetch(API_URL, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({
-      url: document.getElementById("url").value,
-      goal: document.getElementById("goal").value,
-      action: document.getElementById("action").value
+      url: "my.charitableimpact.com",
+      action,
+      goal: content
     })
   });
+  return await res.text();
+}
 
-  document.getElementById("output").innerText = await res.text();
+// -------------------------------
+function show(text) {
+  document.getElementById("output").innerText = text;
 }
 </script>
 
