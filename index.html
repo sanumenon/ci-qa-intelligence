@@ -230,6 +230,13 @@ Plan → Design → Automate → Analyze
     <div class="spinner-text">Generating results…</div>
   </div>
 </div>
+  <script src="https://unpkg.com/mammoth/mammoth.browser.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+  <script>
+    pdfjsLib.GlobalWorkerOptions.workerSrc =
+      "https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js";
+  </script>
+
 <script>
 const API_URL = "https://bold-mouse-582e.menon-sanu.workers.dev";
 let testPlanText = "";
@@ -375,8 +382,5 @@ async function generateSummary() {
   showResponse(await callAPI("summary", executionResults));
 }
 </script>
-<script src="https://unpkg.com/mammoth/mammoth.browser.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
-
 </body>
 </html>
