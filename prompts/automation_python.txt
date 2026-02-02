@@ -1,1 +1,10 @@
+Generate Python Selenium PyTest automation code.
+
+Constraints:
+- Base URL restricted
+- Page Object Model
+- No explanations
+
+Feature:
+{goal}
 
