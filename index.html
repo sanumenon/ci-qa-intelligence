@@ -79,14 +79,16 @@ async function uploadTestPlan() {
   testPlanText = await readFile(file);
 
   const res = await callAPI("plan", testPlanText);
-  show(res);
+  showResponse(res);
+
 }
 
 // -------------------------------
 async function generateManual() {
   if (!testPlanText) return alert("Upload test plan first");
   const res = await callAPI("manual", testPlanText);
-  show(res);
+ showResponse(res);
+
 }
 
 // -------------------------------
@@ -98,7 +100,8 @@ async function generateAutomation() {
     perf: "jmeter"
   };
   const res = await callAPI(actionMap[type], testPlanText);
-  show(res);
+  showResponse(res);
+
 }
 
 // -------------------------------
@@ -113,7 +116,8 @@ async function uploadResults() {
 async function generateSummary() {
   if (!executionResults) return alert("Upload execution results first");
   const res = await callAPI("summary", executionResults);
-  show(res);
+  showResponse(res);
+
 }
 
 // -------------------------------
@@ -127,13 +131,29 @@ async function callAPI(action, content) {
       goal: content
     })
   });
-  return await res.text();
+  return await res.json();
 }
 
 // -------------------------------
 function show(text) {
   document.getElementById("output").innerText = text;
 }
+
+function showResponse(data) {
+const out = document.getElementById("output");
+out.textContent = data.content;
+
+const link = document.createElement("a");
+link.href = URL.createObjectURL(
+  new Blob([data.content], { type: "text/plain" })
+);
+link.download = data.filename;
+link.innerText = "⬇ Download " + data.filename;
+
+out.appendChild(document.createElement("hr"));
+out.appendChild(link);
+}
+
 </script>
 
 </body>
