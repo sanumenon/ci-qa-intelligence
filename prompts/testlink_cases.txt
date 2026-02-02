@@ -1,1 +1,10 @@
+Generate TestLink compatible test cases.
+
+Application: Charitable Impact
+Domain restriction applies.
+
+Feature:
+{goal}
+
+Return XML only.
 
