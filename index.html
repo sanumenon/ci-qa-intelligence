@@ -216,7 +216,10 @@ Plan → Design → Automate → Analyze
 </div>
 
 <div class="output">
-  <h2>📤 Output</h2>
+  <div style="display:flex;align-items:center;gap:10px;">
+  <h2 style="margin:0;">📤 Output</h2>
+  <button class="secondary" onclick="clearOutput()">Clear</button>
+</div>
   <pre id="output">Results will appear here…</pre>
 </div>
 <!-- Spinner Overlay -->
@@ -276,11 +279,19 @@ async function callAPI(action, content) {
   }
 }
 
+function clearOutput() {
+  const out = document.getElementById("output");
+  out.innerHTML = "Results cleared.";
+}
 
 function showResponse(data) {
   const out = document.getElementById("output");
-  out.innerHTML = ""; // clear previous output
-  out.textContent = data.content;
+
+  const block = document.createElement("div");
+  block.style.marginBottom = "20px";
+
+  const content = document.createElement("pre");
+  content.textContent = data.content;
 
   const link = document.createElement("a");
   link.className = "download";
@@ -290,9 +301,13 @@ function showResponse(data) {
   );
   link.textContent = "⬇ Download " + data.filename;
 
-  out.appendChild(document.createElement("hr"));
-  out.appendChild(link);
+  block.appendChild(content);
+  block.appendChild(link);
+  block.appendChild(document.createElement("hr"));
+
+  out.appendChild(block);
 }
+
 
 async function uploadTestPlan() {
   const file = document.getElementById("testplanFile").files[0];
